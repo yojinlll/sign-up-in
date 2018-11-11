@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=hi, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>登录</title>
+
+  <style>
+    *{ margin: 0; padding: 0; }
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .sign-up{
+      margin: 20px;
+      width: 400px;
+    }
+    .sign-up form{
+      margin: 10px 0 10px 0;
+    }
+    .sign-up label{
+      display: inline-block;
+      width: 80px;
+    }
+    .sign-up .error{
+      color: red;
+    }
+    .sign-up input:last-child{
+      margin-top: 10px;
+      padding: 3px 5px 3px 5px ;
+      border: 1px solid rgba(0, 0, 0, 0.56);
+      border-radius: 5px;
+      background: white;
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.54);
+
+    }
+  </style>
+</head>
+<body>
+
+<div class="sign-up">
+  <h1>登录</h1>
+  <form id="signUpForm">
+    <div class="row">
+      <label>邮箱</label>
+      <input type="text" name="email">
+      <span class="error"></span>
+    </div>
+    <div class="row">
+      <label>密码</label>
+      <input type="password" name="password">
+      <span class="error"></span>
+    </div>
+    <div class="row">
+      <input type="submit" value="登录">
+    </div>
+  </form>
+</div>
+
+
+<!--<script src="./main.js"></script>-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script>
+  $('#signUpForm').on('submit',(e)=>{
+    e.preventDefault()
+    let hash = {}
+    let need = ['email','password','password_confirmation']
+    need.forEach((name)=>{
+      let value = $('#signUpForm').find(`[name=${name}]`).val()
+      hash[name] = value
+    })
+    $('.error').text('')
+    if(hash['email']===''){
+      $('.error').eq(0).text('请填写邮箱')
+      return
+    }else if(hash['password']===''){
+      $('.error').eq(1).text('请填写密码')
+      return
+    }else{
+
+      $.post('/sign_in',hash)
+        .then(()=>{
+          console.log('success')
+          window.location.href = '/'
+        },(response)=>{
+          console.log('error')
+          alert('邮箱或密码不正确')
+        })
+    }
+
+  })
+
+</script>
+</body>
+</html>
